@@ -6,6 +6,7 @@ import com.opencsv.CSVReader;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.FileReader;
 import java.util.List;
@@ -15,11 +16,12 @@ import java.util.Random;
 public class TrafficEventService {
 
     private final WebClient webClient;
-    private final String PYTHON_AI_URL = "http://localhost:7860/api/v8/cognitive_grid";
 
-    public TrafficEventService(WebClient.Builder webClientBuilder) {
-        // Initialize the non-blocking WebClient
-        this.webClient = webClientBuilder.baseUrl(PYTHON_AI_URL).build();
+    public TrafficEventService(
+            WebClient.Builder webClientBuilder,
+            @Value("${python.ai.url}") String pythonAiUrl) {
+
+        this.webClient = webClientBuilder.baseUrl(pythonAiUrl).build();
     }
 
     /**
