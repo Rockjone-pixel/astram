@@ -24,9 +24,6 @@ public class TrafficEventService {
         this.webClient = webClientBuilder.baseUrl(pythonAiUrl).build();
     }
 
-    /**
-     * CORE PIPELINE: Sends the Java Object to Python via HTTP POST and maps the JSON response.
-     */
     public Mono<PredictionResponse> predictTrafficImpact(TrafficEventInput inputData) {
         return this.webClient.post()
                 .bodyValue(inputData)
@@ -34,9 +31,15 @@ public class TrafficEventService {
                 .bodyToMono(PredictionResponse.class);
     }
 
-    /**
-     * HACKATHON SIMULATOR: Reads a random row from the CSV to simulate a live traffic alert.
-     */
+    public Mono<Void> sendOperatorFeedback(Object feedbackData) {
+        return WebClient.create("https://jackie30-astram-2-0.hf.space")
+                .post()
+                .uri("/api/v9/operator_feedback")
+                .bodyValue(feedbackData)
+                .retrieve()
+                .bodyToMono(Void.class);
+    }
+
     public TrafficEventInput fetchRandomEventFromCsv() {
         String csvFilePath = "Astram_event_data_anonymized.csv";
 
