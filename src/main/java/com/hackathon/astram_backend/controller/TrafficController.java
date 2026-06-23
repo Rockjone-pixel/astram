@@ -35,4 +35,11 @@ public class TrafficController {
         TrafficEventInput randomInput = trafficEventService.fetchRandomEventFromCsv();
         return trafficEventService.predictTrafficImpact(randomInput);
     }
+    
+     @PostMapping("/operator-feedback")
+    public Mono<Void> submitOperatorFeedback(@RequestBody Object feedbackData) {
+        return trafficEventService.sendOperatorFeedback(feedbackData);
+    }
+
+
 }
